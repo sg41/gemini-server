@@ -1,0 +1,3 @@
+# Gemini chat server
+#### Copyright Sergey Gorbatenko 2024
+to be developed...

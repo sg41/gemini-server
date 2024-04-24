@@ -20,8 +20,12 @@ def handle_chat():
         return 'Invalid request: '+str(request.form)
     user_message = request.form['message']
     chat_history.append(f"User: {user_message}")
-    gemini.convo.send_message(user_message)
-    response = gemini.convo.last.text
+    response = ""
+    try:
+        gemini.convo.send_message(user_message)
+        response = gemini.convo.last.text
+    except Exception as e:
+        response = str(e)
     chat_history.append(response)
 
     return response

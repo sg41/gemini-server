@@ -15,19 +15,17 @@
 # to prove everything works.  You should delete this
 # code to get your own working.
 
-
-import main
 from dotenv import load_dotenv
 import os
 import sys
-HELLO_WORLD = """<html>
+NOT_FOUND = """<html>
 <head>
     <title>PythonAnywhere hosted web application</title>
 </head>
 <body>
 <h1>Hello, World!</h1>
 <p>
-    This is the default welcome page for a
+    This is the .env file NOT FOUND page for a
     <a href="https://www.pythonanywhere.com/">PythonAnywhere</a>
     hosted web application.
 </p>
@@ -111,8 +109,18 @@ if path not in sys.path:
     sys.path.append(path)
 #
 # project_folder = os.path.expanduser('~/my-project-dir')  # adjust as appropriate
-load_dotenv(os.path.join(path, '.env'))
-from main import app as application  # noqa
+if load_dotenv(os.path.join(path, '.env')):
+    import main
+    from main import app as application  # noqa
+else:
+    def application(environ, start_response):
+        status = '404 NOT FOUND'
+        content = NOT_FOUND
+        response_headers = [('Content-Type', 'text/html'),
+                            ('Content-Length', str(len(content)))]
+        start_response(status, response_headers)
+        yield content.encode('utf8')
+
 #
 # NB -- many Flask guides suggest you use a file called run.py; that's
 # not necessary on PythonAnywhere.  And you should make sure your code

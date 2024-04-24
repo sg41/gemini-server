@@ -17,11 +17,13 @@ if project_home not in sys.path:
 from flask_app import app as application  # noqa
 """
 
-load_dotenv('.env')
-# api_token = os.environ.get("PYTHONANYWHERE_API_TOKEN", None)
-
 
 def main():
+
+    load_dotenv('.env')
+    # api_token = None
+    api_token = os.environ.get("PYTHONANYWHERE_API_TOKEN", None)
+
     username = input("Please enter the PythonAnywhere username: ")
     api_token = input(
         "Please enter the API token: ") if api_token is None else api_token
@@ -97,7 +99,6 @@ def main():
     wsgi_file_filename = site_hostname.replace(".", "_").lower() + "_wsgi.py"
     wsgi_file_remote_path = f"/var/www/{wsgi_file_filename}"
     wsgi_file_upload_url = file_upload_url + wsgi_file_remote_path
-    # wsgi_file_content = WSGI_FILE_TEMPLATE.format(project_home=project_home)
     with open(os.path.join(MY_DIR, "src/wsgi.py")) as f:
         wsgi_file_content = f.read()
     print(f"Uploading WSGI file via {wsgi_file_upload_url}")
